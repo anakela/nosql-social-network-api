@@ -16,21 +16,39 @@
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
-
 ## Overview
 
 ### The Challenge
 
-Description of the assignment should go here
+MongoDB is a popular choice for many social networks due to its speed with large amounts of data and flexibility with unstructured data. Over the last part of this course, you’ll use several of the technologies that social networking platforms use in their full-stack applications. Because the foundation of these applications is data, it’s important that you understand how to build and structure the API first.
+
+Your Challenge is to build an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. You’ll use Express.js for routing, a MongoDB database, and the Mongoose ODM. In addition to using the [Express.js](https://www.npmjs.com/package/express) and [Mongoose](https://www.npmjs.com/package/mongoose) packages, you may also optionally use a JavaScript date library of your choice or the native JavaScript `Date` object to format timestamps.
+
+No seed data is provided, so you’ll need to create your own data using Insomnia after you’ve created your API.
+
+Because this application won’t be deployed, you’ll also need to create a walkthrough video that demonstrates its functionality and all of the following acceptance criteria being met. You’ll need to submit a link to the video and add it to the README of your project.
 
 ### User Story
 
-Add the user story here
+```md
+AS A social media startup
+I WANT an API for my social network that uses a NoSQL database
+SO THAT my website can handle large amounts of unstructured data
+```
 
 ### Acceptance Criteria
 
-Add acceptance criteria here
+```md
+GIVEN a social network API
+WHEN I enter the command to invoke the application
+THEN my server is started and the Mongoose models are synced to the MongoDB database
+WHEN I open API GET routes in Insomnia for users and thoughts
+THEN the data for each of these routes is displayed in a formatted JSON
+WHEN I test API POST, PUT, and DELETE routes in Insomnia
+THEN I am able to successfully create, update, and delete users and thoughts in my database
+WHEN I test API POST and DELETE routes in Insomnia
+THEN I am able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list
+```
 
 ### Screenshot
 
@@ -46,17 +64,16 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [https://github.com/anakela/nosql-social-network-api](https://github.com/anakela/nosql-social-network-api)
 
 ## My Process
 
 ### Built With
 
-- Semantic HTML5 markup
-- CSS
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- Node.js
+- Express
+- MongoDB
+- Mongoose
 
 ### What I Learned
 
@@ -93,10 +110,8 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
+- GitHub - [https://github.com/anakela](https://github.com/anakela)
+- LinkedIn - [https://www.linkedin.com/in/anakela/](https://www.linkedin.com/in/anakela/)
 
 ## Acknowledgments
 

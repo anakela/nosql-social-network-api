@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const { User, Thought, Reaction } = require('./models');
 const ObjectId = require('mongodb').ObjectId;
 
+// Allow dotenv elements
 dotenv.config();
 
 const app = express();
@@ -53,6 +54,32 @@ app.get('/api/users/:userId', async (req, res) => {
             _id: ObjectId(req.params.userId),
         });
         res.status(200).json(singleUser);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route for updating a user by its ID
+app.put('/api/users/:userId', async (req, res) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.userId,
+            { ...req.body },
+            { new: true },
+        );
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route for deleting a user by its ID
+app.delete('/api/users/:userId', async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete({
+            _id: ObjectId(req.params.userId),
+        });
+        res.status(200).json(deletedUser);
     } catch (error) {
         res.status(500).json({ error });
     }

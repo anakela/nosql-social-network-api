@@ -22,21 +22,6 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Create an API route for posting new users
-app.post('/api/users', async (req, res) => {
-    try {
-        const newUser = await User.create({
-            username: req.body.username,
-            email: req.body.email,
-            thoughts: [req.body.thoughts],
-            friends: [req.body.friends],
-        });
-        res.status(200).json(newUser);
-    } catch (error) {
-        res.status(500).json({ error });
-    }
-});
-
 // Create an API route for getting all users
 app.get('/api/users', async (req, res) => {
     try {
@@ -53,7 +38,24 @@ app.get('/api/users/:userId', async (req, res) => {
         const singleUser = await User.findById({
             _id: ObjectId(req.params.userId),
         });
+
         res.status(200).json(singleUser);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route for posting new users
+app.post('/api/users', async (req, res) => {
+    try {
+        const newUser = await User.create({
+            username: req.body.username,
+            email: req.body.email,
+            thoughts: [req.body.thoughts],
+            friends: [req.body.friends],
+        });
+
+        res.status(200).json(newUser);
     } catch (error) {
         res.status(500).json({ error });
     }
@@ -67,6 +69,7 @@ app.put('/api/users/:userId', async (req, res) => {
             { ...req.body },
             { new: true },
         );
+
         res.status(200).json(updatedUser);
     } catch (error) {
         res.status(500).json({ error });
@@ -78,24 +81,167 @@ app.delete('/api/users/:userId', async (req, res) => {
     try {
         const deletedUser = await User.findByIdAndDelete({
             _id: ObjectId(req.params.userId),
+            // ASK ABOUT CASCADING THOUGHTS WHEN USER IS DELETED
+            thoughts: req.params.thoughts,
         });
+
         res.status(200).json(deletedUser);
     } catch (error) {
         res.status(500).json({ error });
     }
 });
 
-// Create an API route for posting new thoughts
+// Create an API route to add a new friend to a user's friend list
+app.post('/api/users/:userId/friends/:friendId', async (req, res) => {
+    try {
+        const newFriend = await User.findById(req.body);
 
+        const addedFriend = await User.findByIdAndUpdate(
+            req.params.userId,
+            {
+                $addToSet: {
+                    friends: newFriend._id,
+                }
+            },
+            {
+                new: true,
+            },
+        ).populate('friends');
+
+        res.status(200).json(addedFriend);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route to remove a friend from a user's friend list
+app.delete('/api/users/:userId/friends/:friendId', async (req, res) => {
+    try {
+        const deletedFriend = await User.findByIdAndUpdate(
+            req.params.userId,
+            {
+                $pull: {
+                    friends: '',
+                }
+            },
+            {
+                new: true,
+            }
+        ).populate('friends');
+        res.status(200).json(deletedFriend);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
 
 // Create an API route for getting all thoughts
+app.get('/api/thoughts', async (req, res) => {
+    try {
+        const allThoughts = await Thought.find();
+        res.status(200).json(allThoughts);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
 
+// Create an API route for getting a thought by ID
+app.get('/api/thoughts/:thoughtId', async (req, res) => {
+    try {
+        const oneThought = await Thought.findById({
+            _id: ObjectId(req.params.thoughtId),
+        });
+        res.status(200).json(oneThought);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route for posting new thoughts
+app.post('/api/thoughts', async (req, res) => {
+    try {
+        const newThought = await Thought.create(req.body);
+
+        const user = await User.findByIdAndUpdate(
+            req.params.userId,
+            {
+                $addToSet: {
+                    thoughts: newThought._id,
+                }
+            },
+            {
+                new: true,
+            }
+        ).populate('thoughts');
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route for updating a thought by its ID
+app.put('/api/thoughts/:thoughtId', async (req, res) => {
+    try {
+        const updatedThought = await Thought.findByIdAndUpdate(
+            req.params.thoughtId,
+            { ...req.body },
+            { new: true },
+        );
+
+        res.status(200).json(updatedThought);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// Create an API route for deleting a thought by its ID
+app.delete('/api/thoughts/:thoughtId', async (req, res) => {
+    try {
+        const deletedThought = await Thought.findByIdAndDelete({
+            _id: ObjectId(req.params.thoughtId)
+        });
+
+        res.status(200).json(deletedThought);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
 
 // Create an API route for posting new reactions
+app.post('/api/thoughts/:thoughtId/reactions', async (req, res) => {
+    try {
+        const newReaction = await Reaction.create(req.body);
 
+        const thought = await Thought.findByIdAndUpdate(
+            req.params.thoughtId,
+            {
+                $push: {
+                    reactions: newReaction._id,
+                }
+            },
+            {
+                new: true,
+            }
+        ).populate('reactions');
 
-// Creating an API route for getting all reactions
+        res.status(200).json(thought);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
 
+// Creating an API route for deleting a reaction by ID
+app.delete('/api/thoughts/:thoughtId/reactions/:reactionId', async (req, res) => {
+    try {
+        const deletedReaction = await Reaction.findByIdAndDelete({
+            _id: ObjectId(req.params.reactionId)
+        });
+
+        res.status(200).json(deletedReaction);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
 
 // Confirm that the server is listening
 app.listen(PORT, () => console.log(`Now listening on localhost:${PORT}!`));

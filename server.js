@@ -1,16 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const { User, Friend, Thought, Reaction } = require('./models');
+const { User, Thought, Reaction } = require('./models');
+const ObjectId = require('mongodb').ObjectId;
+
+dotenv.config();
 
 const app = express();
 
 const PORT = process.env.PORT || 3001;
 
 // Connect to MongoDB database
-mongoose.connect(DB_NAME.process.env)
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jzvhqpy.mongodb.net/nosqlSocialNetworkApi?retryWrites=true&w=majority`)
     .then(() => {
-        console.log(`Successfully connected!`);
+        console.log(`Successful!`);
     })
     .catch(err => console.log(err));
 
@@ -43,6 +46,18 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
+// Create an API route for getting a single user by ID
+app.get('/api/users/:userId', async (req, res) => {
+    try {
+        const singleUser = await User.findById({
+            _id: ObjectId(req.params.userId),
+        });
+        res.status(200).json(singleUser);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
 // Create an API route for posting new thoughts
 
 
@@ -55,10 +70,5 @@ app.get('/api/users', async (req, res) => {
 // Creating an API route for getting all reactions
 
 
-// Create an API route for posting new friends
-
-
-// Create an API route for getting all friends
-
 // Confirm that the server is listening
-app.listen(PORT, () => console.log(`Now listening on ${PORT}!`));
+app.listen(PORT, () => console.log(`Now listening on localhost:${PORT}!`));

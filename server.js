@@ -156,6 +156,7 @@ app.get('/api/thoughts/:thoughtId', async (req, res) => {
     }
 });
 
+// SHOWING NULL BUT DOES GET CREATED
 // Create an API route for posting new thoughts
 app.post('/api/thoughts', async (req, res) => {
     try {
@@ -207,6 +208,17 @@ app.delete('/api/thoughts/:thoughtId', async (req, res) => {
     }
 });
 
+// Create an API route for getting all reactions
+app.get('/api/reactions', async (req, res) => {
+    try {
+        const allReactions = await Reaction.find();
+        res.status(200).json(allReactions);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+// ERROR HERE
 // Create an API route for posting new reactions
 app.post('/api/thoughts/:thoughtId/reactions', async (req, res) => {
     try {

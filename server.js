@@ -239,7 +239,6 @@ app.post('/api/thoughts/:thoughtId/reactions', async (req, res) => {
     }
 });
 
-// ERROR
 // Creating an API route for deleting a reaction by ID
 app.delete('/api/thoughts/:thoughtId/reactions/:reactionId', async (req, res) => {
     try {
@@ -249,7 +248,9 @@ app.delete('/api/thoughts/:thoughtId/reactions/:reactionId', async (req, res) =>
             },
             {
                 $pull: {
-                    reactions: ObjectId(req.params.reactionId),
+                    reactions: {
+                        reactionId: req.params.reactionId,
+                    },
                 },
             },
             {

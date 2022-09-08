@@ -33,11 +33,14 @@ const userSchema = new Schema({
 
 }, {
     timestamps: true,
+    toJSON: {
+        virtuals: true,
+    }
 });
 
 // Create a virtual called friendCount that retrieves the length of a user's friends array field on query.
 userSchema.virtual('friendCount').get(function () {
-    return `friendCount: ${this.friends.length}`;
+    return `${this.friends.length}`;
 });
 
 // Create and export the collection so that it can be used in other files.

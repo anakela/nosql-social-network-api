@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const reactionSchema = require('./Reaction');
 
 // Create a blueprint for the thought collection
 const thoughtSchema = new Schema({
@@ -20,13 +21,7 @@ const thoughtSchema = new Schema({
         required: true,
         ref: 'User',
     },
-    reactions: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Reaction',
-            default: [],
-        }
-    ],
+    reactions: [ reactionSchema ],
 }, {
     timestamps: true,
 });

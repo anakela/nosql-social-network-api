@@ -1,11 +1,11 @@
-const ObjectId = require('mongodb').ObjectId;
-const { Schema } = require('mongoose');
+// const ObjectId = require('mongodb').ObjectId;
+const { Schema, Types } = require('mongoose');
 
 // Create a blueprint for the reaction collection
 const reactionSchema = new Schema({
     reactionId: {
         type: Schema.Types.ObjectId,
-        default: new ObjectId,
+        default: () => new Types.ObjectId(),
     },
     reactionBody: {
         type: String,
@@ -25,6 +25,7 @@ const reactionSchema = new Schema({
     }
 }, {
     timestamps: true,
+    id: false,
 });
 
 module.exports = reactionSchema;

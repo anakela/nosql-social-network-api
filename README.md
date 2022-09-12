@@ -53,7 +53,8 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ### Screenshot
 
 ![](./assets/images/soto_nosql_social_network_api.png)
-https://user-images.githubusercontent.com/103882157/189561915-8733557c-7d5a-40dd-bc86-f3a036201dfe.mp4
+
+https://user-images.githubusercontent.com/103882157/189562028-08f14ffa-4a02-4546-8c32-a285088ece38.mp4
 
 ### Links
 

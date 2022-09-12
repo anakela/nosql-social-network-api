@@ -172,8 +172,8 @@ In the future, I would like to update the NoSQL database so that thoughts belong
 
 - [Code Grepper: “email validation in mongoose” Code Answer’s](https://www.codegrepper.com/code-examples/whatever/email+validation+in+mongoose)
 - [Coder Rocket Fuel: Store MongoDB Credentials As Environment Variables In Node.js](https://www.coderrocketfuel.com/article/store-mongodb-credentials-as-environment-variables-in-nodejs)
-- [Free Code Camp: Introduction to Mongoose for MongoDB
-](https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/)
+- [Free Code Camp: Introduction to Mongoose for MongoDB](https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/)
+- [GitHub: Basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 - [Regexr.com: RFC2822 Email Validation](https://regexr.com/2rhq7)
 - [Stack Overflow: Mongoose: Schema vs Model?](https://stackoverflow.com/questions/22950282/mongoose-schema-vs-model)
 - [Stack Overflow: Using MongoDB connection string in a Github repo](https://stackoverflow.com/questions/62499842/using-mongodb-connection-string-in-a-github-repo)

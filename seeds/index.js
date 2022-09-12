@@ -1,7 +1,6 @@
 const { User, Thought, Reaction } = require('../models');
 const users = require('./users');
 const thoughts = require('./thoughts');
-// const reactions = require('./reactions');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
@@ -12,7 +11,6 @@ const seeder = async () => {
 
     await User.deleteMany();
     await Thought.deleteMany();
-    // await Reaction.deleteMany();
 
     const newUsers = await User.insertMany(users);
 

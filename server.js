@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const { User, Thought } = require('./models');
-// const Types = require('mongodb').Types;
 const ObjectId = require('mongodb').ObjectId;
 
 // Allow dotenv elements
@@ -93,7 +92,7 @@ app.delete('/api/users/:userId', async (req, res) => {
     }
 });
 
-// FRIENDS
+// FRIEND
 // Create an API route to add a new friend to a user's friend list
 app.post('/api/users/:userId/friends/', async (req, res) => {
     try {
@@ -164,7 +163,6 @@ app.get('/api/thoughts/:thoughtId', async (req, res) => {
     }
 });
 
-// SHOWING NULL BUT DOES GET CREATED
 // Create an API route for posting new thoughts
 app.post('/api/thoughts', async (req, res) => {
     try {

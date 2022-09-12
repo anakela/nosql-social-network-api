@@ -1,4 +1,3 @@
-// const ObjectId = require('mongodb').ObjectId;
 const { Schema, Types } = require('mongoose');
 
 // Create a blueprint for the reaction collection

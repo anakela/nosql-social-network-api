@@ -12,8 +12,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        // validate: [validateEmail, "Please use a valid email address."],
-        // Regex from regexr.com: https://regexr.com/2rhq7
         match: [/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/, "Please enter a valid email address."],
     },
     thoughts: [

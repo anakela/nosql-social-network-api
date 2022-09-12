@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const { User, Thought, /*Reaction*/ } = require('./models');
+const { User, Thought } = require('./models');
 // const Types = require('mongodb').Types;
 const ObjectId = require('mongodb').ObjectId;
 
@@ -95,11 +95,13 @@ app.delete('/api/users/:userId', async (req, res) => {
 
 // FRIENDS
 // Create an API route to add a new friend to a user's friend list
-app.post('/api/users/:userId/friends', async (req, res) => {
+app.post('/api/users/:userId/friends/', async (req, res) => {
     try {
+        console.log(req.params.userId);
         const newFriend = await User.findOne(req.body);
+        console.log(req.body, newFriend);
 
-        const addedFriend = await User.findOneAndUpdate(
+        const addedFriend = await User.findByIdAndUpdate(
             req.params.userId,
             {
                 $addToSet: {
@@ -121,11 +123,11 @@ app.post('/api/users/:userId/friends', async (req, res) => {
 // Create an API route to remove a friend from a user's friend list
 app.delete('/api/users/:userId/friends/:friendId', async (req, res) => {
     try {
-        const deletedFriend = await User.findOneAndUpdate(
+        const deletedFriend = await User.findByIdAndUpdate(
             req.params.userId,
             {
                 $pull: {
-                    friends: ObjectId(req.params.friendId),
+                    friends: req.params.friendId,
                 }
             },
             {

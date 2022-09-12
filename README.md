@@ -57,48 +57,125 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ### Links
 
 - Solution URL: [https://github.com/anakela/nosql-social-network-api](https://github.com/anakela/nosql-social-network-api)
-- Walkthrough Video: []()
+- Walkthrough Video: [https://github.com/anakela/nosql-social-network-api/tree/main/assets/videos](https://github.com/anakela/nosql-social-network-api/tree/main/assets/videos)
 
 ## My Process
 
 ### Built With
 
-- Node.js
-- Express
+- JavaScript
+- Node JS
+- Express JS
+- Mongoose JS
 - MongoDB
-- Mongoose
 
 ### What I Learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+While building this social network API, I had the opportunity to explore a NoSQL database using MongoDB as well as processes on how to create models and schemas using Mongoose JS.
 
-To see how you can add code snippets, see below:
+One of the most interesting and challenge parts of this assignment was exploring the difference between a schema and a model in MongoDB.  According to Peter Lyons on Stack Overflow:
 
-```html
-<h1>Some HTML code I'm proud of</h1>
+>In mongoose, a schema represents the structure of a particular document, either completely or just a portion of the document. It's a way to express expected properties and values as well as constraints and indexes. A model defines a programming interface for interacting with the database (read, insert, update, etc).
+
+For this assignment, the `Reaction.js` file was required to be a schema only with a unique `reactionId` with a `type` of `ObjectId`:
+
+```JavaScript
+const { Schema, Types } = require('mongoose');
+
+// Create a blueprint for the reaction collection
+const reactionSchema = new Schema({
+    reactionId: {
+        type: Schema.Types.ObjectId,
+        default: new Types.ObjectId(),
+    },
+    reactionBody: {
+        type: String,
+        required: true,
+        maxLength: [280],
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+        get: (date) => {
+            if (date) return date.toLocaleDateString();
+        }
+    }
+}, {
+    timestamps: true,
+    toJSON: {
+        getters: true,
+    },
+    id: false,
+});
+
+module.exports = reactionSchema;
 ```
 
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
+The `User.js` and `Thought.js` files, on the other hand, were both schemas and models:
+
+```JavaScript
+const { Schema, model } = require('mongoose');
+const reactionSchema = require('./Reaction');
+
+// Create a blueprint for the thought collection
+const thoughtSchema = new Schema({
+    thoughtText: {
+        type: String,
+        required: true,
+        minLength: [1],
+        maxLength: [128],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+        get: (date) => {
+            if (date) return date.toLocaleDateString();
+        },
+    },
+    username: {
+        type: Schema.Types.String,
+        required: true,
+        ref: 'User',
+    },
+    reactions: [ reactionSchema ],
+}, {
+    timestamps: true,
+    toJSON: {
+        getters: true,
+        virtuals: true,
+    },
+});
+
+// Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
+thoughtSchema.virtual('reactionCount').get(function () {
+    return `${this.reactions.length}`;
+});
+
+module.exports = model('Thought', thoughtSchema);
 ```
 
-If you want more help with writing markdown, check out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+In addition, I also got to learn more about MongoDB and Mongoose.  In a nutshell, according to Nick Karnik of Free Code Camp, the difference between the two is as follows:
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+>Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
+>
+>MongoDB is a schema-less NoSQL document database. It means you can store JSON documents in it, and the structure of these documents can vary as it is not enforced like SQL databases.
 
 ### Continued Development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+In the future, I would like to update the NoSQL database so that thoughts belong to users who are removed from the database are also cascaded to be removed.  This will ensure that the data in the database is as up to date as possible and that thoughts are removed along with the users who created them.
 
 ### Useful Resources
 
 - [Code Grepper: “email validation in mongoose” Code Answer’s](https://www.codegrepper.com/code-examples/whatever/email+validation+in+mongoose)
 - [Coder Rocket Fuel: Store MongoDB Credentials As Environment Variables In Node.js](https://www.coderrocketfuel.com/article/store-mongodb-credentials-as-environment-variables-in-nodejs)
+- [Free Code Camp: Introduction to Mongoose for MongoDB
+](https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/)
 - [Regexr.com: RFC2822 Email Validation](https://regexr.com/2rhq7)
+- [Stack Overflow: Mongoose: Schema vs Model?](https://stackoverflow.com/questions/22950282/mongoose-schema-vs-model)
 - [Stack Overflow: Using MongoDB connection string in a Github repo](https://stackoverflow.com/questions/62499842/using-mongodb-connection-string-in-a-github-repo)
 - [The Web Dev: How to validate email syntax with Mongoose?](https://thewebdev.info/2022/03/16/how-to-validate-email-syntax-with-mongoose/)
 
@@ -109,6 +186,7 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 ## Acknowledgments
 
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+- Fellow Bootcampers:
+  - Nolan Spence
+- Scott Nelson (TA)
+- Bobbi Tarkany (Tutor)
